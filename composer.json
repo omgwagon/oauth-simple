@@ -1,0 +1,19 @@
+{
+    "name": "omgwagon/oauth-simple",
+    "description": "Simple OAuth1 signature package with support for oauth_body_hash",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Paul Dawson",
+            "email": "paul.dawson@omgwagon.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Omgwagon\\OAuthSimple\\": "src/"
+        }
+    },
+    "require": {
+        "phpunit/phpunit": "^6.3"
+    }
+}
