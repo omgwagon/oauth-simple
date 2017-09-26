@@ -456,10 +456,9 @@ class OAuthConsumer
         $normalized_keys = array();
         $return_array = array();
         foreach ($this->parameters as $paramName => $paramValue) {
-            $param_is_secret = preg_match('/\w+_secret/', $paramName);
-            $param_at_after_start = strpos($paramValue, '@') !== 0;
-            $param_post_file_exists = file_exists(substr($paramValue, 1));
-            if (!$param_is_secret || ($param_at_after_start && !$param_post_file_exists)) {
+            if (!preg_match('/\w+_secret/', $paramName)
+                || (strpos($paramValue, '@') !== 0
+                    && !file_exists(substr($paramValue, 1)))) {
                 if (is_array($paramValue)) {
                     $normalized_keys[self::oauthEscape($paramName)] = array();
                     foreach ($paramValue as $item) {
