@@ -58,9 +58,6 @@ class OAuthConsumer
         // Reset any left over auth data
         $this->reset();
 
-        // Set the action to POST
-        $this->setAction('POST');
-
         // Strip out ports 80 or 443 as per oauth spec and build url without query
         $port = isset($parse_url['port']) ? ':' . $parse_url['port'] : '';
         $this->setUrl(
