@@ -15,5 +15,8 @@
     },
     "require": {
         "phpunit/phpunit": "^7.0"
+    },
+    "require-dev": {
+        "codacy/coverage": "dev-master"
     }
 }
