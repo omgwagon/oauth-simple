@@ -20,6 +20,7 @@ class OAuthConsumer
      * @param string $api_key
      * @param string $shared_secret
      * @return OAuthConsumer
+     * @throws OAuthSimpleException
      */
     public function setup($api_key = "", $shared_secret = "")
     {
@@ -39,6 +40,7 @@ class OAuthConsumer
      * @param $params
      * @param $url
      * @return array
+     * @throws OAuthSimpleException
      */
     public function signParams($params, $url)
     {
@@ -105,6 +107,7 @@ class OAuthConsumer
      * @access public
      * @param array - An array of parameters for the call
      * @return OAuthConsumer (Object)
+     * @throws OAuthSimpleException
      */
     private function setParameters($parameters = array())
     {
@@ -162,7 +165,7 @@ class OAuthConsumer
     /**
      * Convenience method for setURL
      *
-     * @param path (String)
+     * @param $path (String)
      * @see setURL
      * @return mixed
      */
@@ -198,7 +201,7 @@ class OAuthConsumer
     /**
      * Set the "action" for the url, (e.g. GET,POST, DELETE, etc.)
      *
-     * @param action (String) HTTP Action word.
+     * @param $action (String) HTTP Action word.
      * @return OAuthConsumer
      * @throws OAuthSimpleException
      */
@@ -271,6 +274,7 @@ class OAuthConsumer
      *
      * @param $signatures
      * @return OAuthConsumer
+     * @throws OAuthSimpleException
      */
     public function setTokensAndSecrets($signatures)
     {
@@ -308,6 +312,7 @@ class OAuthConsumer
     /** sign the request
      *
      * @return array (Array) signed values
+     * @throws OAuthSimpleException
      */
     public function sign()
     {
@@ -334,6 +339,7 @@ class OAuthConsumer
      * @param array $args
      * @return mixed $result (String)
      * @internal param $args (Array)
+     * @throws OAuthSimpleException
      */
     public function getHeaderString($args = array())
     {
@@ -353,6 +359,7 @@ class OAuthConsumer
     /**
      * @param array $args
      * @return array
+     * @throws OAuthSimpleException
      */
     public function getParamArray($args = array())
     {
@@ -372,7 +379,6 @@ class OAuthConsumer
     /**
      * @param $string
      * @return int|mixed|string
-     * @throws OAuthSimpleException
      */
     private static function oauthEscape($string)
     {
@@ -481,7 +487,6 @@ class OAuthConsumer
 
     /**
      * @return string
-     * @throws OAuthSimpleException
      */
     private function generateSignature()
     {
