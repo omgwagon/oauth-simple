@@ -257,7 +257,7 @@ class OAuthConsumer
             throw new OAuthSimpleException('Missing required consumer_key in OAuthSimple.signatures');
         }
         if (empty($this->secrets['shared_secret'])) {
-            throw new OAuthSimpleException('Missing requires shared_secret in OAuthSimple.signatures');
+            throw new OAuthSimpleException('Missing required shared_secret in OAuthSimple.signatures');
         }
         if (!empty($this->secrets['oauth_token']) && empty($this->secrets['oauth_secret'])) {
             throw new OAuthSimpleException('Missing oauth_secret for supplied oauth_token in OAuthSimple.signatures');
@@ -278,12 +278,12 @@ class OAuthConsumer
     }
 
     /**
-     * Set the signature method (currently only Plaintext or SHA-MAC1)
+     * Set the signature method (currently only Plaintext or HMAC-SHA1)
      *
      * @param string $method
      * @return OAuthConsumer
      * @throws OAuthSimpleException
-     * @internal param method $Method of signing the transaction (only PLAINTEXT and SHA-MAC1 allowed for now)
+     * @internal param method $Method of signing the transaction (only PLAINTEXT and HMAC-SHA1 allowed for now)
      */
     public function setSignatureMethod($method = "")
     {
@@ -454,8 +454,7 @@ class OAuthConsumer
         $return_array = array();
         foreach ($this->parameters as $paramName => $paramValue) {
             if (!preg_match('/\w+_secret/', $paramName)
-                || (strpos($paramValue, '@') !== 0
-                    && !file_exists(substr($paramValue, 1)))) {
+                || (strpos($paramValue, '@') !== 0 && !file_exists(substr($paramValue, 1)))) {
                 if (is_array($paramValue)) {
                     $normalized_keys[self::oauthEscape($paramName)] = array();
                     foreach ($paramValue as $item) {
@@ -494,10 +493,11 @@ class OAuthConsumer
         if (isset($this->secrets['oauth_secret'])) {
             $secretKey .= self::oauthEscape($this->secrets['oauth_secret']);
         }
+        $signature = '';
         switch ($this->parameters['oauth_signature_method']) {
             case 'PLAINTEXT':
-                return urlencode($secretKey);
-                ;
+                $signature = urlencode($secretKey);
+                break;
             case 'HMAC-SHA1':
                 $this->setSignatureBaseString(
                     self::oauthEscape($this->getAction()) .
@@ -506,10 +506,9 @@ class OAuthConsumer
                     '&' .
                     self::oauthEscape($this->normalizedParameters())
                 );
-                return base64_encode(hash_hmac('sha1', $this->getSignatureBaseString(), $secretKey, true));
-            default:
-                throw new OAuthSimpleException('Unknown signature method for OAuthSimple');
+                $signature = base64_encode(hash_hmac('sha1', $this->getSignatureBaseString(), $secretKey, true));
                 break;
         }
+        return $signature;
     }
 }
